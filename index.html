@@ -111,14 +111,7 @@
       background: rgba(255, 255, 255, 0.9);
       border-radius: 50%;
       box-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
-      animation: fall linear infinite;
       will-change: transform;
-    }
-    @keyframes fall {
-      to {
-        transform: translateY(100vh) translateX(var(--wind, 0px));
-        opacity: 0;
-      }
     }
   </style>
 </head>
@@ -136,29 +129,42 @@
     const snowContainer = document.getElementById('snow');
     const snowflakeCount = 150;
     const flakes = [];
+
     for (let i = 0; i < snowflakeCount; i++) {
       const flake = document.createElement('div');
       flake.className = 'snowflake';
       flake.style.left = Math.random() * 100 + '%';
-      flake.style.animationDuration = (2 + Math.random() * 3) + 's';
+      flake.style.top = Math.random() * -100 + 'px';
+      flake.style.animation = `fall${i} linear infinite`;
+
+      const xShift = (Math.random() - 0.5) * 200;
+      const duration = 5 + Math.random() * 5;
+
+      const styleSheet = document.styleSheets[0];
+      styleSheet.insertRule(`@keyframes fall${i} {
+        0% { transform: translate(0, 0); opacity: 1; }
+        100% { transform: translate(${xShift}px, 110vh); opacity: 0; }
+      }`, styleSheet.cssRules.length);
+
+      flake.style.animationDuration = duration + 's';
       flake.style.animationDelay = Math.random() * 5 + 's';
       snowContainer.appendChild(flake);
-      flakes.push(flake);
+      flakes.push({ el: flake, xShift });
     }
 
-    let currentWind = 0;
-    let targetWind = 0;
     document.addEventListener('mousemove', e => {
-      targetWind = (e.clientX / window.innerWidth - 0.5) * 200;
+      const intensity = ((e.clientX / window.innerWidth) - 0.5) * 80; // abgeschwächt
+      flakes.forEach(({ el, xShift }, i) => {
+        const ruleIndex = [...document.styleSheets[0].cssRules].findIndex(r => r.name === `fall${i}`);
+        if (ruleIndex !== -1) {
+          document.styleSheets[0].deleteRule(ruleIndex);
+        }
+        document.styleSheets[0].insertRule(`@keyframes fall${i} {
+          0% { transform: translate(0, 0); opacity: 1; }
+          100% { transform: translate(${xShift + intensity}px, 110vh); opacity: 0; }
+        }`, document.styleSheets[0].cssRules.length);
+      });
     });
-    function animateWind() {
-      currentWind += (targetWind - currentWind) * 0.05;
-      for (const flake of flakes) {
-        flake.style.setProperty('--wind', `${currentWind}px`);
-      }
-      requestAnimationFrame(animateWind);
-    }
-    animateWind();
 
     const popup = document.getElementById('popup');
     const popupTitle = document.getElementById('popup-title');
