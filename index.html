@@ -9,45 +9,17 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       height: 100vh;
-      background: linear-gradient(180deg, #99ddee 0%, #66ccff 50%, #3399ff 100%);
+      background: linear-gradient(180deg, #66bbdd 0%, #66ccff 50%, #3399ff 100%);
       overflow: hidden;
       font-family: 'Montserrat', sans-serif;
       position: relative;
-    }
-    input::-webkit-credentials-auto-fill-button,
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus {
-      transition: background-color 5000s ease-in-out 0s;
-      background: transparent !important;
-      color: inherit !important;
-    }
-    input[autocomplete]::-webkit-contacts-auto-fill-button,
-    input[autocomplete]::-webkit-credentials-auto-fill-button {
-      visibility: hidden;
-      display: none !important;
-      pointer-events: none;
-      height: 0;
-      width: 0;
-    }
-    input:-webkit-autofill,
-    input:-internal-autofill-selected {
-      background-color: transparent !important;
-      color: inherit !important;
-    }
-    input {
-      autocomplete: off !important;
-    }
-    input:-internal-autofill-previewed,
-    input:-internal-autofill-selected {
-      appearance: none !important;
     }
     .header {
       position: absolute;
       top: 0;
       width: 100%;
-      background: rgba(255, 255, 255, 0.25);
-      border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
       color: white;
       text-align: center;
       padding: 15px;
@@ -55,103 +27,47 @@
       font-weight: 600;
       z-index: 2;
       backdrop-filter: blur(6px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
-    .container, .popup, .snow {
-      filter: blur(20px);
-      opacity: 0.15;
-      pointer-events: none;
-      transition: all 1s ease;
-    }
-    .auth-box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 999;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      text-align: center;
-      opacity: 1;
-      transition: opacity 1s ease;
-    }
-    .auth-box.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .auth-box h2 {
-      margin-bottom: 15px;
-    }
-    .auth-box input {
-      padding: 10px;
-      width: 250px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-    .auth-box button {
-      padding: 10px 20px;
-      background-color: #87cefa;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .auth-snow {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 998;
-      pointer-events: none;
-    }
-    .auth-snowflake {
-      position: absolute;
-      top: -10px;
-      width: 8px;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
-      animation: fallAuth linear infinite;
-      will-change: transform;
-    }
-    @keyframes fallAuth {
-      to {
-        transform: translateY(100vh) translateX(var(--wind, 0px));
-        opacity: 0;
-      }
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      align-items: flex-start;
+      padding-top: 120px;
+      height: 100vh;
+      position: relative;
+      z-index: 1;
     }
     .card {
-      width: 220px;
-      height: 280px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.25);
-      border: 3px solid rgba(255, 255, 255, 1);
+      width: 200px;
+      height: 260px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.7);
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 600;
       text-align: center;
       animation: borderColorCycle var(--duration, 4s) ease-in-out infinite;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transition: transform 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
+      backdrop-filter: blur(4px);
     }
     .card:hover {
-      transform: scale(1.05);
+      transform: scale(1.04);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
     @keyframes borderColorCycle {
-      0%   { border-color: rgba(255, 255, 255, 1); }
-      25%  { border-color: rgba(160, 200, 255, 1); }
-      50%  { border-color: rgba(120, 170, 255, 1); }
-      75%  { border-color: rgba(160, 200, 255, 1); }
-      100% { border-color: rgba(255, 255, 255, 1); }
+      0%   { border-color: rgba(255, 255, 255, 0.7); }
+      25%  { border-color: rgba(160, 200, 255, 0.7); }
+      50%  { border-color: rgba(120, 170, 255, 0.7); }
+      75%  { border-color: rgba(160, 200, 255, 0.7); }
+      100% { border-color: rgba(255, 255, 255, 0.7); }
     }
     .popup {
       position: absolute;
@@ -160,17 +76,17 @@
       transform: translateX(-50%) scale(0.95);
       width: 90%;
       max-width: 1000px;
-      height: 340px;
-      background: rgba(255, 255, 255, 0.25);
-      border: 3px solid rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
+      height: 300px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      border-radius: 16px;
       color: white;
-      padding: 20px;
-      font-size: 1.5rem;
+      padding: 24px;
+      font-size: 1.4rem;
       font-weight: 600;
       opacity: 0;
       pointer-events: none;
-      transition: all 0.4s ease;
+      transition: all 0.6s ease;
       backdrop-filter: blur(8px);
       z-index: 5;
     }
@@ -178,16 +94,6 @@
       opacity: 1;
       pointer-events: auto;
       transform: translateX(-50%) scale(1);
-    }
-    .container {
-      display: flex;
-      justify-content: center;
-      gap: 100px;
-      align-items: flex-start;
-      padding-top: 100px;
-      height: 100vh;
-      position: relative;
-      z-index: 1;
     }
     .snow {
       position: absolute;
@@ -202,9 +108,9 @@
       top: -10px;
       width: 10px;
       height: 10px;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 50%;
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
       animation: fall linear infinite;
       will-change: transform;
     }
@@ -218,13 +124,6 @@
 </head>
 <body>
   <div class="header">Lave HUB</div>
-  <div class="auth-box" id="authBox">
-    <h2>Enter your key</h2>
-    <input type="text" id="keyInput" placeholder="Enter your key" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')">
-    <br>
-    <button onclick="validateKey()">Submit</button>
-  </div>
-  <div class="auth-snow" id="authSnow"></div>
   <div class="snow" id="snow"></div>
   <div class="container">
     <div class="card" data-cat="Kategorie 1" style="--duration: 3s">Kategorie 1</div>
@@ -234,47 +133,6 @@
   <div class="popup" id="popup"><span id="popup-title"></span></div>
 
   <script>
-    const validKeys = [
-      "LAVE-XgPdM1qKbvYTHZRNaECs937LmW",
-      "LAVE-TqNbPZRYa9CMgX1HdEKvL3smv",
-      "LAVE-MEYqgTPXNvC9bHaKRLs7d3Zm1",
-      "LAVE-K93RbYgMHTXvqNa1ZCLPms7Ed",
-      "LAVE-ZKbNTvHdMPYqE173sLRgXaC9m",
-      "LAVE-LvPMgYXaTqHKRNCEb79dZs13m",
-      "LAVE-YCmXHbPg7MvEKRNZ1Lq3Tsd9a",
-      "LAVE-PY9XaMLTvbNqg13HdRCZEsKm7",
-      "LAVE-NvKqTYXHgLCZR9bM13PEdasm7",
-      "LAVE-HXaPZCqgKYT93NRLMbEv1sMd7"
-    ];
-
-    function validateKey() {
-      const key = document.getElementById('keyInput').value.trim();
-      if (validKeys.includes(key)) {
-        const authBox = document.getElementById('authBox');
-        authBox.classList.add('hidden');
-        document.getElementById('authSnow').style.display = 'none';
-
-        setTimeout(() => {
-          document.querySelector('.container').style.filter = 'none';
-          document.querySelector('.container').style.opacity = '1';
-          document.querySelector('.container').style.pointerEvents = 'auto';
-          document.querySelector('.popup').style.filter = 'none';
-          document.querySelector('.popup').style.opacity = '1';
-          document.querySelector('.popup').style.pointerEvents = 'auto';
-          document.querySelector('.snow').style.filter = 'none';
-          document.querySelector('.snow').style.opacity = '1';
-          document.querySelector('.snow').style.pointerEvents = 'auto';
-
-          const popup = document.getElementById('popup');
-          const popupTitle = document.getElementById('popup-title');
-          popupTitle.textContent = 'Kategorie 1';
-          popup.classList.add('active');
-        }, 1000);
-      } else {
-        alert('Invalid key');
-      }
-    }
-
     const snowContainer = document.getElementById('snow');
     const snowflakeCount = 150;
     const flakes = [];
@@ -286,16 +144,6 @@
       flake.style.animationDelay = Math.random() * 5 + 's';
       snowContainer.appendChild(flake);
       flakes.push(flake);
-    }
-
-    const authSnowContainer = document.getElementById('authSnow');
-    for (let i = 0; i < 60; i++) {
-      const flake = document.createElement('div');
-      flake.className = 'auth-snowflake';
-      flake.style.left = Math.random() * 100 + '%';
-      flake.style.animationDuration = (2 + Math.random() * 3) + 's';
-      flake.style.animationDelay = Math.random() * 5 + 's';
-      authSnowContainer.appendChild(flake);
     }
 
     let currentWind = 0;
@@ -315,12 +163,16 @@
     const popup = document.getElementById('popup');
     const popupTitle = document.getElementById('popup-title');
     let currentCategory = null;
+
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('click', () => {
         const category = card.dataset.cat;
         if (currentCategory === category) {
           popup.classList.remove('active');
           currentCategory = null;
+          setTimeout(() => {
+            popupTitle.textContent = '';
+          }, 500);
         } else {
           popupTitle.textContent = category;
           popup.classList.add('active');
