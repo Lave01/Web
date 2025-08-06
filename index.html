@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lave.mp3</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background-color: #1db954;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #playlist {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .song {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #181818;
+      border-radius: 10px;
+    }
+    .song-info {
+      display: flex;
+      align-items: center;
+    }
+    .song-info img {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .controls button {
+      background-color: #1db954;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Bottom player bar */
+    footer {
+      background-color: #181818;
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .player-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #progress {
+      flex: 1;
+    }
+    #volume-control {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <header>Lave.mp3</header>
+  <div id="playlist"></div>
+
+  <footer>
+    <div class="player-info">
+      <div id="current-song">No song playing</div>
+      <div id="time">0:00 / 0:00</div>
+    </div>
+    <div class="progress-container">
+      <input type="range" id="progress" min="0" max="100" value="0">
+      <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
+    </div>
+  </footer>
+
+  <audio id="player" preload="metadata"></audio>
+
+  <script>
+    const musicFolder = 'music/';
+    const logoPath = 'Logo/Music.png';
+    const songs = [
+      "Shabab(e)s im VIP - Pashanim.mp3",
+      "amore çok - ALCATRAZ.mp3",
+    ];
+
+    const playlistDiv = document.getElementById("playlist");
+    const player = document.getElementById("player");
+    const currentSongLabel = document.getElementById("current-song");
+    const timeLabel = document.getElementById("time");
+    const progressBar = document.getElementById("progress");
+    const volumeControl = document.getElementById("volume-control");
+
+    let currentSongIndex = -1;
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return `${min}:${sec}`;
+    }
+
+    function updateTime() {
+      timeLabel.textContent = `${formatTime(player.currentTime)} / ${formatTime(player.duration || 0)}`;
+      progressBar.value = player.duration ? (player.currentTime / player.duration) * 100 : 0;
+    }
+
+    function createSongElement(name, index) {
+      const songDiv = document.createElement("div");
+      songDiv.className = "song";
+
+      const info = document.createElement("div");
+      info.className = "song-info";
+
+      const img = document.createElement("img");
+      img.src = logoPath;
+
+      const title = document.createElement("div");
+      title.textContent = name.replace(".mp3", "");
+
+      info.appendChild(img);
+      info.appendChild(title);
+
+      const controls = document.createElement("div");
+      controls.className = "controls";
+
+      const playBtn = document.createElement("button");
+      playBtn.textContent = "Play";
+      playBtn.onclick = () => playSong(index);
+
+      const stopBtn = document.createElement("button");
+      stopBtn.textContent = "Stop";
+      stopBtn.onclick = () => player.pause();
+
+      controls.appendChild(playBtn);
+      controls.appendChild(stopBtn);
+
+      songDiv.appendChild(info);
+      songDiv.appendChild(controls);
+
+      return songDiv;
+    }
+
+    function playSong(index) {
+      const songFile = musicFolder + songs[index];
+      currentSongIndex = index;
+      player.src = songFile;
+      player.play();
+      currentSongLabel.textContent = songs[index].replace(".mp3", "");
+    }
+
+    function playRandomSong() {
+      const next = Math.floor(Math.random() * songs.length);
+      playSong(next);
+    }
+
+    player.onended = playRandomSong;
+    player.ontimeupdate = updateTime;
+    player.onloadedmetadata = updateTime;
+
+    // Scrub mit Slider
+    progressBar.oninput = () => {
+      if (player.duration) {
+        player.currentTime = (progressBar.value / 100) * player.duration;
+      }
+    };
+
+    // Lautstärke global setzen
+    volumeControl.oninput = () => {
+      player.volume = volumeControl.value;
+    };
+
+    player.volume = volumeControl.value;
+
+    // Init Playlist
+    songs.forEach((song, index) => {
+      const songEl = createSongElement(song, index);
+      playlistDiv.appendChild(songEl);
+    });
+  </script>
+</body>
+</html>
